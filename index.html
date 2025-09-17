@@ -4,18 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tipos de almacenamiento de datos | Guía educativa</title>
-  <meta name="description" content="Guía práctica sobre tipos de almacenamiento de datos: RAM, SSD, HDD, NAS, SAN, objetos en nube, copias de seguridad y más. Incluye filtros, tarjetas, tabla comparativa, glosario y quiz.">
+  <meta name="description" content="Guía práctica sobre tipos de almacenamiento de datos con filtros, tarjetas, tabla comparativa, glosario y quiz. Todo generado desde arrays de datos.">
   <link rel="icon" href="data:,">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Configuración mínima opcional de Tailwind en CDN si quisieras extender
     tailwind.config = {
       theme: { extend: { container: { center: true, padding: "1rem" } } }
     };
   </script>
   <style>
-    /* Ajustes de enfoque accesible */
     :focus { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900">
@@ -37,47 +36,26 @@
     <!-- Sección Filtro -->
     <section id="filtro" aria-labelledby="filtro-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="filtro-title" class="text-2xl font-semibold">Filtra tecnologías</h2>
-      <p class="mt-2 text-slate-600">Filtra por tipo, uso o medio para resaltar las tarjetas relevantes.</p>
+      <p class="mt-2 text-slate-600">Filtra por tipo o uso y busca por nombre. Las tarjetas y la tabla se actualizan al instante.</p>
 
       <form class="mt-4 grid gap-4 md:grid-cols-4" onsubmit="event.preventDefault()">
         <label class="block">
           <span class="block text-sm font-medium">Tipo</span>
           <select id="filter-tipo" class="mt-1 w-full rounded border-slate-300" aria-label="Filtrar por tipo">
             <option value="">Todos</option>
-            <option value="memoria">Memoria</option>
-            <option value="bloques">Bloques</option>
-            <option value="archivos">Archivos</option>
-            <option value="objetos">Objetos</option>
-            <option value="red">Red</option>
-            <option value="nube">Nube</option>
-            <option value="backup">Backup</option>
           </select>
         </label>
 
         <label class="block">
-          <span class="block text-sm font-medium">Uso principal</span>
+          <span class="block text-sm font-medium">Uso</span>
           <select id="filter-uso" class="mt-1 w-full rounded border-slate-300" aria-label="Filtrar por uso">
             <option value="">Todos</option>
-            <option value="latencia-baja">Latencia baja</option>
-            <option value="capacidad">Alta capacidad</option>
-            <option value="rendimiento">Alto rendimiento</option>
-            <option value="disponibilidad">Alta disponibilidad</option>
-            <option value="archivado">Archivado</option>
-            <option value="respaldo">Respaldo</option>
           </select>
         </label>
 
-        <label class="block">
-          <span class="block text-sm font-medium">Medio</span>
-          <select id="filter-medio" class="mt-1 w-full rounded border-slate-300" aria-label="Filtrar por medio">
-            <option value="">Todos</option>
-            <option value="ram">RAM</option>
-            <option value="ssd">SSD</option>
-            <option value="hdd">HDD</option>
-            <option value="red">Red</option>
-            <option value="objeto">Objeto</option>
-            <option value="cinta">Cinta</option>
-          </select>
+        <label class="block md:col-span-2">
+          <span class="block text-sm font-medium">Buscar por nombre</span>
+          <input id="filter-texto" class="mt-1 w-full rounded border-slate-300" placeholder="Ej. SSD, NAS, RAM" aria-label="Buscar por nombre">
         </label>
 
         <div class="flex items-end gap-2">
@@ -85,91 +63,13 @@
           <button type="button" id="btn-limpiar" class="px-4 py-2 rounded border">Limpiar</button>
         </div>
       </form>
+      <p id="no-result" class="hidden mt-3 text-sm text-amber-700">No hay elementos que coincidan con el filtro.</p>
     </section>
 
     <!-- Sección Tarjetas -->
     <section id="tarjetas" aria-labelledby="tarjetas-title" class="space-y-6">
       <h2 id="tarjetas-title" class="text-2xl font-semibold">Tarjetas de tecnologías</h2>
-      <div id="grid-cards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Cada tarjeta lleva data-attrs para filtro -->
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="memoria" data-uso="latencia-baja" data-medio="ram">
-          <h3 class="text-xl font-semibold">RAM</h3>
-          <p class="mt-2 text-sm text-slate-600">Memoria volátil de muy baja latencia usada para datos en uso inmediato.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Latencia muy baja</li>
-            <li>Costo por GB alto</li>
-            <li>Volátil</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="bloques" data-uso="rendimiento" data-medio="ssd">
-          <h3 class="text-xl font-semibold">SSD NVMe</h3>
-          <p class="mt-2 text-sm text-slate-600">Almacenamiento de bloques en estado sólido con IOPS altos.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>IOPS y throughput altos</li>
-            <li>Latencia baja</li>
-            <li>No volátil</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="bloques" data-uso="capacidad" data-medio="hdd">
-          <h3 class="text-xl font-semibold">HDD</h3>
-          <p class="mt-2 text-sm text-slate-600">Almacenamiento de bloques magnético de alta capacidad y menor costo.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Capacidad alta y barato</li>
-            <li>Latencia más alta</li>
-            <li>Bueno para datos fríos</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="archivos" data-uso="disponibilidad" data-medio="red">
-          <h3 class="text-xl font-semibold">NAS</h3>
-          <p class="mt-2 text-sm text-slate-600">Almacenamiento por archivos expuesto por red para múltiples clientes.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Compartición sencilla</li>
-            <li>Escala limitada por cabina</li>
-            <li>Protocolos NFS y SMB</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="bloques" data-uso="rendimiento" data-medio="red">
-          <h3 class="text-xl font-semibold">SAN</h3>
-          <p class="mt-2 text-sm text-slate-600">Red dedicada de bloques para alto rendimiento y baja latencia.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Fibre Channel o iSCSI</li>
-            <li>Para bases de datos críticas</li>
-            <li>Coste y complejidad mayores</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="objetos" data-uso="archivado" data-medio="objeto">
-          <h3 class="text-xl font-semibold">Objeto en nube</h3>
-          <p class="mt-2 text-sm text-slate-600">Almacenamiento de objetos con durabilidad alta y clases por coste.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Escala masiva</li>
-            <li>Consistencia eventual típica</li>
-            <li>Ideal para contenido estático</li>
-          </ul>
-        </article>
-
-        <article class="card bg-white p-5 rounded-2xl shadow border"
-                 data-tipo="backup" data-uso="respaldo" data-medio="cinta">
-          <h3 class="text-xl font-semibold">Cinta magnética</h3>
-          <p class="mt-2 text-sm text-slate-600">Soporte de muy bajo coste para archivado y copias 3 2 1.</p>
-          <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Barato por TB</li>
-            <li>Latencia de acceso alta</li>
-            <li>Excelente para offsite</li>
-          </ul>
-        </article>
-      </div>
-      <p id="no-result" class="hidden mt-2 text-sm text-amber-700">No hay tarjetas que coincidan con el filtro.</p>
+      <div id="grid-cards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
     <!-- Sección Tabla comparativa -->
@@ -182,70 +82,15 @@
             <tr>
               <th class="text-left p-3">Tecnología</th>
               <th class="text-left p-3">Tipo</th>
+              <th class="text-left p-3">Uso</th>
               <th class="text-left p-3">Latencia</th>
-              <th class="text-left p-3">IOPS</th>
-              <th class="text-left p-3">Costo</th>
-              <th class="text-left p-3">Casos de uso</th>
+              <th class="text-left p-3">Rendimiento</th>
+              <th class="text-left p-3">Durabilidad</th>
+              <th class="text-left p-3">Escalabilidad</th>
+              <th class="text-left p-3">Coste</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-t">
-              <td class="p-3">RAM</td>
-              <td class="p-3">Memoria</td>
-              <td class="p-3">Muy baja</td>
-              <td class="p-3">Muy alto</td>
-              <td class="p-3">Alto</td>
-              <td class="p-3">Caches, procesamiento in-memory</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">SSD NVMe</td>
-              <td class="p-3">Bloques</td>
-              <td class="p-3">Baja</td>
-              <td class="p-3">Alto</td>
-              <td class="p-3">Medio</td>
-              <td class="p-3">OLTP, servidores de aplicaciones</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">HDD</td>
-              <td class="p-3">Bloques</td>
-              <td class="p-3">Media</td>
-              <td class="p-3">Medio</td>
-              <td class="p-3">Bajo</td>
-              <td class="p-3">Data lakes, backups locales</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">NAS</td>
-              <td class="p-3">Archivos</td>
-              <td class="p-3">Variable</td>
-              <td class="p-3">Medio</td>
-              <td class="p-3">Medio</td>
-              <td class="p-3">Colaboración, multimedia</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">SAN</td>
-              <td class="p-3">Bloques</td>
-              <td class="p-3">Baja</td>
-              <td class="p-3">Alto</td>
-              <td class="p-3">Alto</td>
-              <td class="p-3">Bases de datos críticas</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">Objeto en nube</td>
-              <td class="p-3">Objetos</td>
-              <td class="p-3">Alta comparada</td>
-              <td class="p-3">Variable</td>
-              <td class="p-3">De bajo a medio</td>
-              <td class="p-3">Web estática, data lakes, archivado</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-3">Cinta</td>
-              <td class="p-3">Secuencial</td>
-              <td class="p-3">Muy alta</td>
-              <td class="p-3">Bajo</td>
-              <td class="p-3">Muy bajo</td>
-              <td class="p-3">Archivado, offsite</td>
-            </tr>
-          </tbody>
+          <tbody id="tabla-body"></tbody>
         </table>
       </div>
     </section>
@@ -253,84 +98,14 @@
     <!-- Sección Glosario -->
     <section id="glosario" aria-labelledby="glosario-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="glosario-title" class="text-2xl font-semibold">Glosario</h2>
-      <dl class="mt-4 grid gap-4 md:grid-cols-2">
-        <div>
-          <dt class="font-medium">Latencia</dt>
-          <dd class="text-sm text-slate-600">Tiempo de respuesta de una operación de E/S.</dd>
-        </div>
-        <div>
-          <dt class="font-medium">IOPS</dt>
-          <dd class="text-sm text-slate-600">Operaciones de entrada/salida por segundo, indicador de rendimiento.</dd>
-        </div>
-        <div>
-          <dt class="font-medium">RPO</dt>
-          <dd class="text-sm text-slate-600">Punto objetivo de recuperación, pérdida máxima de datos aceptable.</dd>
-        </div>
-        <div>
-          <dt class="font-medium">RTO</dt>
-          <dd class="text-sm text-slate-600">Tiempo objetivo de recuperación, cuánto tardas en volver a operar.</dd>
-        </div>
-        <div>
-          <dt class="font-medium">Consistencia eventual</dt>
-          <dd class="text-sm text-slate-600">Modelo en el que la convergencia de datos no es inmediata.</dd>
-        </div>
-        <div>
-          <dt class="font-medium">3 2 1</dt>
-          <dd class="text-sm text-slate-600">Tres copias, dos medios, una offsite.</dd>
-        </div>
-      </dl>
+      <dl id="glosario-list" class="mt-4 grid gap-4 md:grid-cols-2"></dl>
     </section>
 
     <!-- Sección Quiz -->
     <section id="quiz" aria-labelledby="quiz-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="quiz-title" class="text-2xl font-semibold">Quiz rápido</h2>
       <p class="mt-2 text-slate-600">Responde y comprueba. No se guardan datos.</p>
-
-      <form id="quiz-form" class="mt-4 space-y-6" onsubmit="event.preventDefault(); evaluarQuiz();">
-        <fieldset class="space-y-2">
-          <legend class="font-medium">1. ¿Qué elegirías para OLTP con baja latencia?</legend>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q1" value="ssd"> <span>SSD NVMe</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q1" value="objeto"> <span>Objeto en nube</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q1" value="cinta"> <span>Cinta</span>
-          </label>
-        </fieldset>
-
-        <fieldset class="space-y-2">
-          <legend class="font-medium">2. ¿Qué medio es óptimo para archivado offsite barato?</legend>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q2" value="cinta"> <span>Cinta</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q2" value="ram"> <span>RAM</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q2" value="san"> <span>SAN</span>
-          </label>
-        </fieldset>
-
-        <fieldset class="space-y-2">
-          <legend class="font-medium">3. Señala la afirmación correcta</legend>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q3" value="a"> <span>NAS expone almacenamiento por archivos como NFS o SMB.</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q3" value="b"> <span>SAN expone almacenamiento por objetos.</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="q3" value="c"> <span>Objeto en nube usa bloques montados.</span>
-          </label>
-        </fieldset>
-
-        <button type="submit" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">
-          Comprobar
-        </button>
-      </form>
-
+      <form id="quiz-form" class="mt-4 space-y-6" onsubmit="event.preventDefault(); evaluarQuiz();"></form>
       <div id="quiz-resultado" class="mt-4 font-medium"></div>
     </section>
   </main>
@@ -342,47 +117,192 @@
   </footer>
 
   <script>
-    // Filtro simple por atributos data-*
-    const cards = () => Array.from(document.querySelectorAll('#grid-cards .card'));
+    // ---------- Datos ----------
+    const items = [
+      { nombre: "RAM", tipo: "memoria", uso: "latencia-baja", ejemplos: ["DDR4", "DDR5"], latencia: "Nanosegundos", rendimiento: "Muy alto", durabilidad: "Volátil", escalabilidad: "Limitada por placa base", coste: "Alto", desc: "Memoria volátil usada para procesamiento inmediato." },
+      { nombre: "SSD NVMe", tipo: "bloques", uso: "rendimiento", ejemplos: ["Samsung 980 Pro", "WD Black"], latencia: "Decenas de µs", rendimiento: "Alto", durabilidad: "Buena", escalabilidad: "Alta en servidores", coste: "Medio alto", desc: "Disco sólido PCIe con gran velocidad." },
+      { nombre: "HDD", tipo: "bloques", uso: "capacidad", ejemplos: ["Seagate IronWolf", "WD Blue"], latencia: "Milisegundos", rendimiento: "Medio", durabilidad: "Media", escalabilidad: "Alta en cabinas", coste: "Bajo", desc: "Disco magnético barato y de gran capacidad." },
+      { nombre: "NAS", tipo: "archivos", uso: "disponibilidad", ejemplos: ["Synology", "QNAP"], latencia: "Dependiente de red", rendimiento: "Medio", durabilidad: "Alta con RAID", escalabilidad: "Moderada", coste: "Medio", desc: "Almacenamiento de archivos expuesto por red." },
+      { nombre: "SAN", tipo: "bloques", uso: "rendimiento", ejemplos: ["Dell EMC PowerMax", "HPE 3PAR"], latencia: "Baja", rendimiento: "Alto", durabilidad: "Alta con redundancia", escalabilidad: "Alta", coste: "Alto", desc: "Red de bloques para bases de datos críticas." },
+      { nombre: "Objeto en nube", tipo: "objetos", uso: "archivado", ejemplos: ["AWS S3", "Azure Blob"], latencia: "Decenas de ms", rendimiento: "Variable", durabilidad: "Muy alta", escalabilidad: "Masiva", coste: "Bajo a medio", desc: "Almacenamiento de objetos con APIs HTTP." },
+      { nombre: "Bloque en nube", tipo: "bloques", uso: "rendimiento", ejemplos: ["AWS EBS", "Azure Managed Disks"], latencia: "Baja", rendimiento: "Alto", durabilidad: "Alta", escalabilidad: "Flexible por volumen", coste: "Medio", desc: "Volúmenes de bloques en la nube montados en VM." },
+      { nombre: "BD relacional", tipo: "bases", uso: "transaccional", ejemplos: ["PostgreSQL", "MySQL"], latencia: "Depende del motor y disco", rendimiento: "Alto para ACID", durabilidad: "Alta", escalabilidad: "Vertical buena", coste: "Variable", desc: "Base de datos estructurada con transacciones ACID." },
+      { nombre: "NoSQL clave-valor", tipo: "bases", uso: "rendimiento", ejemplos: ["Redis", "DynamoDB"], latencia: "Muy baja", rendimiento: "Muy alto", durabilidad: "Variable", escalabilidad: "Horizontal excelente", coste: "Variable", desc: "Almacenamiento rápido de pares clave-valor." },
+      { nombre: "Cinta o archivado", tipo: "backup", uso: "respaldo", ejemplos: ["LTO-8", "IBM TS1160"], latencia: "Muy alta", rendimiento: "Bajo", durabilidad: "Muy alta si se conserva bien", escalabilidad: "Masiva en librerías", coste: "Muy bajo", desc: "Soporte físico barato para archivado de largo plazo." }
+    ];
+
+    const glosario = [
+      { termino: "Latencia", definicion: "Tiempo de respuesta de una operación de almacenamiento." },
+      { termino: "IOPS", definicion: "Número de operaciones de entrada y salida por segundo." },
+      { termino: "ACID", definicion: "Atomicidad, consistencia, aislamiento y durabilidad en bases de datos." },
+      { termino: "RAID", definicion: "Redundancia y distribución de discos para rendimiento y tolerancia a fallos." },
+      { termino: "CAP", definicion: "Trade off entre consistencia, disponibilidad y tolerancia a particiones." },
+      { termino: "Consistencia eventual", definicion: "Las replicas convergen con el tiempo sin inmediatez garantizada." },
+      { termino: "Durabilidad", definicion: "Capacidad de los datos de sobrevivir a fallos." },
+      { termino: "Escalabilidad horizontal", definicion: "Crecimiento añadiendo más nodos en paralelo." }
+    ];
+
+    const preguntas = [
+      { enunciado: "¿Qué medio es más adecuado para archivado de muy bajo coste?", opciones: ["RAM", "SSD NVMe", "Cinta"], correcta: "Cinta" },
+      { enunciado: "¿Cuál de estas tecnologías sigue el modelo ACID por defecto?", opciones: ["BD relacional", "NoSQL clave-valor", "Objeto en nube"], correcta: "BD relacional" },
+      { enunciado: "¿Qué sistema se usa típicamente para exponer almacenamiento por archivos en red?", opciones: ["NAS", "SAN", "Bloque en nube"], correcta: "NAS" }
+    ];
+
+    // ---------- Utilidades ----------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const humanize = s => s.replace(/-/g, " ").replace(/\b\w/g, m => m.toUpperCase());
+
+    // ---------- Render Filtros ----------
+    function initFiltros() {
+      const tipos = Array.from(new Set(items.map(i => i.tipo))).sort();
+      const usos = Array.from(new Set(items.map(i => i.uso))).sort();
+      const tipoSel = $("#filter-tipo");
+      const usoSel = $("#filter-uso");
+      tipos.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t; opt.textContent = humanize(t);
+        tipoSel.appendChild(opt);
+      });
+      usos.forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u; opt.textContent = humanize(u);
+        usoSel.appendChild(opt);
+      });
+      $("#btn-aplicar").addEventListener("click", aplicarFiltro);
+      $("#btn-limpiar").addEventListener("click", () => {
+        tipoSel.value = ""; usoSel.value = ""; $("#filter-texto").value = "";
+        aplicarFiltro();
+      });
+    }
+
+    // ---------- Render Tarjetas ----------
+    function renderCards(lista) {
+      const cont = $("#grid-cards");
+      cont.innerHTML = "";
+      lista.forEach(i => {
+        const art = document.createElement("article");
+        art.className = "bg-white p-5 rounded-2xl shadow border";
+        art.setAttribute("data-tipo", i.tipo);
+        art.setAttribute("data-uso", i.uso);
+        art.innerHTML = `
+          <h3 class="text-xl font-semibold">${i.nombre}</h3>
+          <p class="mt-2 text-sm text-slate-600">${i.desc}</p>
+          <ul class="mt-3 text-sm list-disc pl-5">
+            <li><span class="font-medium">Tipo:</span> ${humanize(i.tipo)}</li>
+            <li><span class="font-medium">Uso:</span> ${humanize(i.uso)}</li>
+            <li><span class="font-medium">Ejemplos:</span> ${i.ejemplos.join(", ")}</li>
+            <li><span class="font-medium">Latencia:</span> ${i.latencia}</li>
+            <li><span class="font-medium">Rendimiento:</span> ${i.rendimiento}</li>
+            <li><span class="font-medium">Durabilidad:</span> ${i.durabilidad}</li>
+            <li><span class="font-medium">Escalabilidad:</span> ${i.escalabilidad}</li>
+            <li><span class="font-medium">Coste:</span> ${i.coste}</li>
+          </ul>
+        `;
+        cont.appendChild(art);
+      });
+    }
+
+    // ---------- Render Tabla ----------
+    function renderTabla(lista) {
+      const body = $("#tabla-body");
+      body.innerHTML = "";
+      lista.forEach(i => {
+        const tr = document.createElement("tr");
+        tr.className = "border-t";
+        tr.innerHTML = `
+          <td class="p-3">${i.nombre}</td>
+          <td class="p-3">${humanize(i.tipo)}</td>
+          <td class="p-3">${humanize(i.uso)}</td>
+          <td class="p-3">${i.latencia}</td>
+          <td class="p-3">${i.rendimiento}</td>
+          <td class="p-3">${i.durabilidad}</td>
+          <td class="p-3">${i.escalabilidad}</td>
+          <td class="p-3">${i.coste}</td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    // ---------- Render Glosario ----------
+    function renderGlosario() {
+      const dl = $("#glosario-list");
+      dl.innerHTML = "";
+      glosario.forEach(g => {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <dt class="font-medium">${g.termino}</dt>
+          <dd class="text-sm text-slate-600">${g.definicion}</dd>
+        `;
+        dl.appendChild(wrap);
+      });
+    }
+
+    // ---------- Render Quiz ----------
+    function renderQuiz() {
+      const form = $("#quiz-form");
+      form.innerHTML = "";
+      preguntas.forEach((p, idx) => {
+        const field = document.createElement("fieldset");
+        field.className = "space-y-2";
+        const name = "q" + (idx + 1);
+        field.innerHTML = `<legend class="font-medium">${idx + 1}. ${p.enunciado}</legend>`;
+        p.opciones.forEach(op => {
+          const id = `${name}-${op}`.replace(/\s+/g, "_");
+          const label = document.createElement("label");
+          label.className = "flex items-center gap-2";
+          label.innerHTML = `<input type="radio" id="${id}" name="${name}" value="${op}"> <span>${op}</span>`;
+          field.appendChild(label);
+        });
+        form.appendChild(field);
+      });
+      const btn = document.createElement("button");
+      btn.type = "submit";
+      btn.className = "px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700";
+      btn.textContent = "Comprobar";
+      form.appendChild(btn);
+    }
+
+    // ---------- Filtro ----------
     function aplicarFiltro() {
-      const tipo = document.getElementById('filter-tipo').value;
-      const uso = document.getElementById('filter-uso').value;
-      const medio = document.getElementById('filter-medio').value;
+      const tipo = $("#filter-tipo").value.trim();
+      const uso = $("#filter-uso").value.trim();
+      const texto = $("#filter-texto").value.trim().toLowerCase();
 
-      let visibles = 0;
-      cards().forEach(el => {
-        const ok =
-          (!tipo || el.dataset.tipo === tipo) &&
-          (!uso || el.dataset.uso === uso) &&
-          (!medio || el.dataset.medio === medio);
-        el.classList.toggle('hidden', !ok);
-        if (ok) visibles++;
+      const filtrados = items.filter(i => {
+        const okTipo = !tipo || i.tipo === tipo;
+        const okUso = !uso || i.uso === uso;
+        const okTexto = !texto || i.nombre.toLowerCase().includes(texto);
+        return okTipo && okUso && okTexto;
       });
-      document.getElementById('no-result').classList.toggle('hidden', visibles !== 0);
-    }
-    document.getElementById('btn-aplicar').addEventListener('click', aplicarFiltro);
-    document.getElementById('btn-limpiar').addEventListener('click', () => {
-      document.getElementById('filter-tipo').value = '';
-      document.getElementById('filter-uso').value = '';
-      document.getElementById('filter-medio').value = '';
-      aplicarFiltro();
-    });
 
-    // Quiz
+      $("#no-result").classList.toggle("hidden", filtrados.length !== 0);
+      renderCards(filtrados);
+      renderTabla(filtrados);
+    }
+
+    // ---------- Quiz evaluator ----------
     function evaluarQuiz() {
-      const respuestas = { q1: 'ssd', q2: 'cinta', q3: 'a' };
-      let aciertos = 0, total = 3;
-      Object.keys(respuestas).forEach(q => {
-        const elegido = document.querySelector(`input[name="${q}"]:checked`);
-        if (elegido && elegido.value === respuestas[q]) aciertos++;
+      let aciertos = 0;
+      preguntas.forEach((p, idx) => {
+        const name = "q" + (idx + 1);
+        const elegido = document.querySelector(`input[name="${name}"]:checked`);
+        if (elegido && elegido.value === p.correcta) aciertos++;
       });
-      const out = document.getElementById('quiz-resultado');
-      out.textContent = `Has acertado ${aciertos} de ${total}.`;
-      out.className = 'mt-4 font-medium ' + (aciertos === total ? 'text-green-700' : 'text-amber-700');
+      const out = $("#quiz-resultado");
+      out.textContent = `Has acertado ${aciertos} de ${preguntas.length}.`;
+      out.className = "mt-4 font-medium " + (aciertos === preguntas.length ? "text-green-700" : "text-amber-700");
     }
 
-    // Fecha
-    document.getElementById('fecha').textContent = new Date().toISOString().split('T')[0];
+    // ---------- Inicio ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      initFiltros();
+      renderCards(items);
+      renderTabla(items);
+      renderGlosario();
+      renderQuiz();
+      $("#fecha").textContent = new Date().toISOString().split("T")[0];
+    });
   </script>
 </body>
 </html>
