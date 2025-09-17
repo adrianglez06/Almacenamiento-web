@@ -1,20 +1,18 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tipos de almacenamiento de datos | Guía educativa</title>
-  <meta name="description" content="Guía práctica sobre tipos de almacenamiento de datos con filtros, tarjetas, tabla comparativa, glosario y quiz. Todo generado desde arrays de datos.">
+  <meta name="description" content="Guía práctica sobre tipos de almacenamiento de datos con filtros, tarjetas, tabla comparativa, glosario y quiz. Generado dinámicamente con JavaScript puro." />
   <link rel="icon" href="data:,">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: { extend: { container: { center: true, padding: "1rem" } } }
-    };
+    tailwind.config = { theme: { extend: { container: { center: true, padding: "1rem" } } } };
   </script>
   <style>
     :focus { outline: 3px solid #1d4ed8; outline-offset: 2px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900">
@@ -33,10 +31,10 @@
   </header>
 
   <main class="container mx-auto py-8 space-y-16">
-    <!-- Sección Filtro -->
+    <!-- Filtro -->
     <section id="filtro" aria-labelledby="filtro-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="filtro-title" class="text-2xl font-semibold">Filtra tecnologías</h2>
-      <p class="mt-2 text-slate-600">Filtra por tipo o uso y busca por nombre. Las tarjetas y la tabla se actualizan al instante.</p>
+      <p class="mt-2 text-slate-600">Filtra por tipo y uso y busca por nombre. Las tarjetas y la tabla se actualizan al instante.</p>
 
       <form class="mt-4 grid gap-4 md:grid-cols-4" onsubmit="event.preventDefault()">
         <label class="block">
@@ -66,13 +64,13 @@
       <p id="no-result" class="hidden mt-3 text-sm text-amber-700">No hay elementos que coincidan con el filtro.</p>
     </section>
 
-    <!-- Sección Tarjetas -->
+    <!-- Tarjetas -->
     <section id="tarjetas" aria-labelledby="tarjetas-title" class="space-y-6">
       <h2 id="tarjetas-title" class="text-2xl font-semibold">Tarjetas de tecnologías</h2>
       <div id="grid-cards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
     </section>
 
-    <!-- Sección Tabla comparativa -->
+    <!-- Tabla -->
     <section id="tabla" aria-labelledby="tabla-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="tabla-title" class="text-2xl font-semibold">Tabla comparativa</h2>
       <div class="overflow-x-auto mt-4">
@@ -95,13 +93,13 @@
       </div>
     </section>
 
-    <!-- Sección Glosario -->
+    <!-- Glosario -->
     <section id="glosario" aria-labelledby="glosario-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="glosario-title" class="text-2xl font-semibold">Glosario</h2>
       <dl id="glosario-list" class="mt-4 grid gap-4 md:grid-cols-2"></dl>
     </section>
 
-    <!-- Sección Quiz -->
+    <!-- Quiz -->
     <section id="quiz" aria-labelledby="quiz-title" class="bg-white p-6 rounded-2xl shadow">
       <h2 id="quiz-title" class="text-2xl font-semibold">Quiz rápido</h2>
       <p class="mt-2 text-slate-600">Responde y comprueba. No se guardan datos.</p>
@@ -118,28 +116,28 @@
 
   <script>
     // ---------- Datos ----------
-    const items = [
+    window.items = [
       { nombre: "RAM", tipo: "memoria", uso: "latencia-baja", ejemplos: ["DDR4", "DDR5"], latencia: "Nanosegundos", rendimiento: "Muy alto", durabilidad: "Volátil", escalabilidad: "Limitada por placa base", coste: "Alto", desc: "Memoria volátil usada para procesamiento inmediato." },
-      { nombre: "SSD NVMe", tipo: "bloques", uso: "rendimiento", ejemplos: ["Samsung 980 Pro", "WD Black"], latencia: "Decenas de µs", rendimiento: "Alto", durabilidad: "Buena", escalabilidad: "Alta en servidores", coste: "Medio alto", desc: "Disco sólido PCIe con gran velocidad." },
-      { nombre: "HDD", tipo: "bloques", uso: "capacidad", ejemplos: ["Seagate IronWolf", "WD Blue"], latencia: "Milisegundos", rendimiento: "Medio", durabilidad: "Media", escalabilidad: "Alta en cabinas", coste: "Bajo", desc: "Disco magnético barato y de gran capacidad." },
+      { nombre: "SSD NVMe", tipo: "bloques", uso: "rendimiento", ejemplos: ["Samsung 980 Pro", "WD Black"], latencia: "Decenas de µs", rendimiento: "Alto", durabilidad: "Buena (ciclos de escritura limitados)", escalabilidad: "Alta en servidores", coste: "Medio-Alto", desc: "Disco sólido conectado por PCIe, gran velocidad." },
+      { nombre: "HDD", tipo: "bloques", uso: "capacidad", ejemplos: ["Seagate IronWolf", "WD Blue"], latencia: "Milisegundos", rendimiento: "Medio", durabilidad: "Media (partes mecánicas)", escalabilidad: "Alta en cabinas", coste: "Bajo", desc: "Disco magnético barato y de gran capacidad." },
       { nombre: "NAS", tipo: "archivos", uso: "disponibilidad", ejemplos: ["Synology", "QNAP"], latencia: "Dependiente de red", rendimiento: "Medio", durabilidad: "Alta con RAID", escalabilidad: "Moderada", coste: "Medio", desc: "Almacenamiento de archivos expuesto por red." },
       { nombre: "SAN", tipo: "bloques", uso: "rendimiento", ejemplos: ["Dell EMC PowerMax", "HPE 3PAR"], latencia: "Baja", rendimiento: "Alto", durabilidad: "Alta con redundancia", escalabilidad: "Alta", coste: "Alto", desc: "Red de bloques para bases de datos críticas." },
-      { nombre: "Objeto en nube", tipo: "objetos", uso: "archivado", ejemplos: ["AWS S3", "Azure Blob"], latencia: "Decenas de ms", rendimiento: "Variable", durabilidad: "Muy alta", escalabilidad: "Masiva", coste: "Bajo a medio", desc: "Almacenamiento de objetos con APIs HTTP." },
+      { nombre: "Objeto en nube", tipo: "objetos", uso: "archivado", ejemplos: ["AWS S3", "Azure Blob"], latencia: "Decenas de ms", rendimiento: "Variable", durabilidad: "Muy alta (11 nueves)", escalabilidad: "Masiva", coste: "Bajo a medio", desc: "Almacenamiento de objetos con APIs HTTP." },
       { nombre: "Bloque en nube", tipo: "bloques", uso: "rendimiento", ejemplos: ["AWS EBS", "Azure Managed Disks"], latencia: "Baja", rendimiento: "Alto", durabilidad: "Alta", escalabilidad: "Flexible por volumen", coste: "Medio", desc: "Volúmenes de bloques en la nube montados en VM." },
-      { nombre: "BD relacional", tipo: "bases", uso: "transaccional", ejemplos: ["PostgreSQL", "MySQL"], latencia: "Depende del motor y disco", rendimiento: "Alto para ACID", durabilidad: "Alta", escalabilidad: "Vertical buena", coste: "Variable", desc: "Base de datos estructurada con transacciones ACID." },
-      { nombre: "NoSQL clave-valor", tipo: "bases", uso: "rendimiento", ejemplos: ["Redis", "DynamoDB"], latencia: "Muy baja", rendimiento: "Muy alto", durabilidad: "Variable", escalabilidad: "Horizontal excelente", coste: "Variable", desc: "Almacenamiento rápido de pares clave-valor." },
-      { nombre: "Cinta o archivado", tipo: "backup", uso: "respaldo", ejemplos: ["LTO-8", "IBM TS1160"], latencia: "Muy alta", rendimiento: "Bajo", durabilidad: "Muy alta si se conserva bien", escalabilidad: "Masiva en librerías", coste: "Muy bajo", desc: "Soporte físico barato para archivado de largo plazo." }
+      { nombre: "BD relacional", tipo: "bases", uso: "transaccional", ejemplos: ["PostgreSQL", "MySQL"], latencia: "Depende del motor y disco", rendimiento: "Alto para consultas ACID", durabilidad: "Alta", escalabilidad: "Vertical buena, horizontal compleja", coste: "Variable", desc: "Base de datos estructurada con transacciones ACID." },
+      { nombre: "NoSQL clave-valor", tipo: "bases", uso: "rendimiento", ejemplos: ["Redis", "DynamoDB"], latencia: "Muy baja", rendimiento: "Muy alto", durabilidad: "Variable según configuración", escalabilidad: "Horizontal excelente", coste: "Variable", desc: "Almacenamiento rápido de pares clave-valor." },
+      { nombre: "Cinta / Archivado", tipo: "backup", uso: "respaldo", ejemplos: ["LTO-8", "IBM TS1160"], latencia: "Muy alta (minutos)", rendimiento: "Bajo", durabilidad: "Muy alta si se conserva bien", escalabilidad: "Masiva en librerías", coste: "Muy bajo", desc: "Soporte físico barato para archivado de largo plazo." }
     ];
 
     const glosario = [
       { termino: "Latencia", definicion: "Tiempo de respuesta de una operación de almacenamiento." },
-      { termino: "IOPS", definicion: "Número de operaciones de entrada y salida por segundo." },
-      { termino: "ACID", definicion: "Atomicidad, consistencia, aislamiento y durabilidad en bases de datos." },
-      { termino: "RAID", definicion: "Redundancia y distribución de discos para rendimiento y tolerancia a fallos." },
-      { termino: "CAP", definicion: "Trade off entre consistencia, disponibilidad y tolerancia a particiones." },
-      { termino: "Consistencia eventual", definicion: "Las replicas convergen con el tiempo sin inmediatez garantizada." },
+      { termino: "IOPS", definicion: "Número de operaciones de entrada/salida por segundo." },
+      { termino: "ACID", definicion: "Propiedades de atomicidad, consistencia, aislamiento y durabilidad en bases de datos." },
+      { termino: "RAID", definicion: "Conjunto de técnicas de redundancia y distribución de discos para rendimiento y tolerancia a fallos." },
+      { termino: "CAP", definicion: "Teorema que establece el trade-off entre consistencia, disponibilidad y tolerancia a particiones." },
+      { termino: "Consistencia eventual", definicion: "Modelo donde las réplicas convergen con el tiempo, sin garantía inmediata." },
       { termino: "Durabilidad", definicion: "Capacidad de los datos de sobrevivir a fallos." },
-      { termino: "Escalabilidad horizontal", definicion: "Crecimiento añadiendo más nodos en paralelo." }
+      { termino: "Escalabilidad horizontal", definicion: "Capacidad de crecer añadiendo más nodos en paralelo." }
     ];
 
     const preguntas = [
@@ -148,85 +146,65 @@
       { enunciado: "¿Qué sistema se usa típicamente para exponer almacenamiento por archivos en red?", opciones: ["NAS", "SAN", "Bloque en nube"], correcta: "NAS" }
     ];
 
-    // ---------- Utilidades ----------
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const humanize = s => s.replace(/-/g, " ").replace(/\b\w/g, m => m.toUpperCase());
+    // ---------- Helpers ----------
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+    const humanize = s => String(s).replace(/-/g, " ").replace(/\b\w/g, m => m.toUpperCase());
 
-    // ---------- Render Filtros ----------
-    function initFiltros() {
-      const tipos = Array.from(new Set(items.map(i => i.tipo))).sort();
-      const usos = Array.from(new Set(items.map(i => i.uso))).sort();
-      const tipoSel = $("#filter-tipo");
-      const usoSel = $("#filter-uso");
-      tipos.forEach(t => {
-        const opt = document.createElement("option");
-        opt.value = t; opt.textContent = humanize(t);
-        tipoSel.appendChild(opt);
-      });
-      usos.forEach(u => {
-        const opt = document.createElement("option");
-        opt.value = u; opt.textContent = humanize(u);
-        usoSel.appendChild(opt);
-      });
-      $("#btn-aplicar").addEventListener("click", aplicarFiltro);
-      $("#btn-limpiar").addEventListener("click", () => {
-        tipoSel.value = ""; usoSel.value = ""; $("#filter-texto").value = "";
-        aplicarFiltro();
-      });
-    }
-
-    // ---------- Render Tarjetas ----------
-    function renderCards(lista) {
-      const cont = $("#grid-cards");
-      cont.innerHTML = "";
-      lista.forEach(i => {
-        const art = document.createElement("article");
-        art.className = "bg-white p-5 rounded-2xl shadow border";
-        art.setAttribute("data-tipo", i.tipo);
-        art.setAttribute("data-uso", i.uso);
-        art.innerHTML = `
+    // ---------- Render tarjetas ----------
+    function renderCards(list) {
+      const container = $("#grid-cards");
+      if (!container) return;
+      container.innerHTML = "";
+      list.forEach(i => {
+        const el = document.createElement("article");
+        el.className = "bg-white p-5 rounded-2xl shadow border";
+        el.setAttribute("data-tipo", i.tipo);
+        el.setAttribute("data-uso", i.uso);
+        el.innerHTML = `
           <h3 class="text-xl font-semibold">${i.nombre}</h3>
-          <p class="mt-2 text-sm text-slate-600">${i.desc}</p>
+          <p class="mt-2 text-sm text-slate-600">${i.desc || ""}</p>
           <ul class="mt-3 text-sm list-disc pl-5">
             <li><span class="font-medium">Tipo:</span> ${humanize(i.tipo)}</li>
             <li><span class="font-medium">Uso:</span> ${humanize(i.uso)}</li>
-            <li><span class="font-medium">Ejemplos:</span> ${i.ejemplos.join(", ")}</li>
-            <li><span class="font-medium">Latencia:</span> ${i.latencia}</li>
-            <li><span class="font-medium">Rendimiento:</span> ${i.rendimiento}</li>
-            <li><span class="font-medium">Durabilidad:</span> ${i.durabilidad}</li>
-            <li><span class="font-medium">Escalabilidad:</span> ${i.escalabilidad}</li>
-            <li><span class="font-medium">Coste:</span> ${i.coste}</li>
+            <li><span class="font-medium">Ejemplos:</span> ${(i.ejemplos || []).join(", ")}</li>
+            <li><span class="font-medium">Latencia:</span> ${i.latencia || "-"}</li>
+            <li><span class="font-medium">Rendimiento:</span> ${i.rendimiento || "-"}</li>
+            <li><span class="font-medium">Durabilidad:</span> ${i.durabilidad || "-"}</li>
+            <li><span class="font-medium">Escalabilidad:</span> ${i.escalabilidad || "-"}</li>
+            <li><span class="font-medium">Coste:</span> ${i.coste || "-"}</li>
           </ul>
         `;
-        cont.appendChild(art);
+        container.appendChild(el);
       });
     }
 
-    // ---------- Render Tabla ----------
-    function renderTabla(lista) {
-      const body = $("#tabla-body");
-      body.innerHTML = "";
-      lista.forEach(i => {
+    // ---------- Render tabla ----------
+    function renderTabla(list) {
+      const tbody = $("#tabla-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      list.forEach(i => {
         const tr = document.createElement("tr");
         tr.className = "border-t";
         tr.innerHTML = `
           <td class="p-3">${i.nombre}</td>
           <td class="p-3">${humanize(i.tipo)}</td>
           <td class="p-3">${humanize(i.uso)}</td>
-          <td class="p-3">${i.latencia}</td>
-          <td class="p-3">${i.rendimiento}</td>
-          <td class="p-3">${i.durabilidad}</td>
-          <td class="p-3">${i.escalabilidad}</td>
-          <td class="p-3">${i.coste}</td>
+          <td class="p-3">${i.latencia || "-"}</td>
+          <td class="p-3">${i.rendimiento || "-"}</td>
+          <td class="p-3">${i.durabilidad || "-"}</td>
+          <td class="p-3">${i.escalabilidad || "-"}</td>
+          <td class="p-3">${i.coste || "-"}</td>
         `;
-        body.appendChild(tr);
+        tbody.appendChild(tr);
       });
     }
 
-    // ---------- Render Glosario ----------
+    // ---------- Render glosario ----------
     function renderGlosario() {
       const dl = $("#glosario-list");
+      if (!dl) return;
       dl.innerHTML = "";
       glosario.forEach(g => {
         const wrap = document.createElement("div");
@@ -238,9 +216,10 @@
       });
     }
 
-    // ---------- Render Quiz ----------
+    // ---------- Render quiz ----------
     function renderQuiz() {
       const form = $("#quiz-form");
+      if (!form) return;
       form.innerHTML = "";
       preguntas.forEach((p, idx) => {
         const field = document.createElement("fieldset");
@@ -262,26 +241,6 @@
       btn.textContent = "Comprobar";
       form.appendChild(btn);
     }
-
-    // ---------- Filtro ----------
-    function aplicarFiltro() {
-      const tipo = $("#filter-tipo").value.trim();
-      const uso = $("#filter-uso").value.trim();
-      const texto = $("#filter-texto").value.trim().toLowerCase();
-
-      const filtrados = items.filter(i => {
-        const okTipo = !tipo || i.tipo === tipo;
-        const okUso = !uso || i.uso === uso;
-        const okTexto = !texto || i.nombre.toLowerCase().includes(texto);
-        return okTipo && okUso && okTexto;
-      });
-
-      $("#no-result").classList.toggle("hidden", filtrados.length !== 0);
-      renderCards(filtrados);
-      renderTabla(filtrados);
-    }
-
-    // ---------- Quiz evaluator ----------
     function evaluarQuiz() {
       let aciertos = 0;
       preguntas.forEach((p, idx) => {
@@ -290,18 +249,68 @@
         if (elegido && elegido.value === p.correcta) aciertos++;
       });
       const out = $("#quiz-resultado");
+      if (!out) return;
       out.textContent = `Has acertado ${aciertos} de ${preguntas.length}.`;
       out.className = "mt-4 font-medium " + (aciertos === preguntas.length ? "text-green-700" : "text-amber-700");
     }
 
-    // ---------- Inicio ----------
+    // ---------- Aplicar filtros: texto + tipo + uso ----------
+    function applyFilter() {
+      const tipo = ($("#filter-tipo")?.value || "").trim();
+      const uso = ($("#filter-uso")?.value || "").trim();
+      const texto = ($("#filter-texto")?.value || "").trim().toLowerCase();
+
+      const data = Array.isArray(window.items) ? window.items : [];
+      const filtrados = data.filter(i => {
+        const okTipo = !tipo || i.tipo === tipo;
+        const okUso = !uso || i.uso === uso;
+        const okTexto = !texto || i.nombre.toLowerCase().includes(texto);
+        return okTipo && okUso && okTexto;
+      });
+
+      $("#no-result")?.classList.toggle("hidden", filtrados.length !== 0);
+      renderCards(filtrados);
+      renderTabla(filtrados);
+    }
+
+    // ---------- Inicialización ----------
     document.addEventListener("DOMContentLoaded", () => {
-      initFiltros();
-      renderCards(items);
-      renderTabla(items);
+      const data = Array.isArray(window.items) ? window.items : [];
+
+      // Poblar selects desde los datos
+      const tipos = Array.from(new Set(data.map(i => i.tipo))).sort();
+      const usos  = Array.from(new Set(data.map(i => i.uso))).sort();
+
+      const tipoSel = $("#filter-tipo");
+      const usoSel  = $("#filter-uso");
+
+      if (tipoSel) tipos.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t; opt.textContent = humanize(t);
+        tipoSel.appendChild(opt);
+      });
+      if (usoSel) usos.forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u; opt.textContent = humanize(u);
+        usoSel.appendChild(opt);
+      });
+
+      // Eventos
+      $("#btn-aplicar")?.addEventListener("click", applyFilter);
+      $("#btn-limpiar")?.addEventListener("click", () => {
+        if (tipoSel) tipoSel.value = "";
+        if (usoSel) usoSel.value = "";
+        const text = $("#filter-texto"); if (text) text.value = "";
+        applyFilter();
+      });
+
+      // Pintado inicial
+      renderCards(data);
+      renderTabla(data);
       renderGlosario();
       renderQuiz();
-      $("#fecha").textContent = new Date().toISOString().split("T")[0];
+      $("#no-result")?.classList.add("hidden");
+      const fecha = $("#fecha"); if (fecha) fecha.textContent = new Date().toISOString().split("T")[0];
     });
   </script>
 </body>
