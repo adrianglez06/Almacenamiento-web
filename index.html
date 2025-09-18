@@ -126,7 +126,9 @@
       { nombre: "Bloque en nube", tipo: "bloques", uso: "rendimiento", ejemplos: ["AWS EBS", "Azure Managed Disks"], latencia: "Baja", rendimiento: "Alto", durabilidad: "Alta", escalabilidad: "Flexible por volumen", coste: "Medio", desc: "Volúmenes de bloques en la nube montados en VM." },
       { nombre: "BD relacional", tipo: "bases", uso: "transaccional", ejemplos: ["PostgreSQL", "MySQL"], latencia: "Depende del motor y disco", rendimiento: "Alto para consultas ACID", durabilidad: "Alta", escalabilidad: "Vertical buena, horizontal compleja", coste: "Variable", desc: "Base de datos estructurada con transacciones ACID." },
       { nombre: "NoSQL clave-valor", tipo: "bases", uso: "rendimiento", ejemplos: ["Redis", "DynamoDB"], latencia: "Muy baja", rendimiento: "Muy alto", durabilidad: "Variable según configuración", escalabilidad: "Horizontal excelente", coste: "Variable", desc: "Almacenamiento rápido de pares clave-valor." },
-      { nombre: "Cinta / Archivado", tipo: "backup", uso: "respaldo", ejemplos: ["LTO-8", "IBM TS1160"], latencia: "Muy alta (minutos)", rendimiento: "Bajo", durabilidad: "Muy alta si se conserva bien", escalabilidad: "Masiva en librerías", coste: "Muy bajo", desc: "Soporte físico barato para archivado de largo plazo." }
+      { nombre: "Cinta / Archivado", tipo: "backup", uso: "respaldo", ejemplos: ["LTO-8", "IBM TS1160"], latencia: "Muy alta (minutos)", rendimiento: "Bajo", durabilidad: "Muy alta si se conserva bien", escalabilidad: "Masiva en librerías", coste: "Muy bajo", desc: "Soporte físico barato para archivado de largo plazo." },
+      { nombre: "Archivo en nube", tipo: "archivos", uso: "disponibilidad", ejemplos: ["AWS EFS", "Azure Files", "GCP Filestore"], latencia: "Decenas a cientos de ms", rendimiento: "Medio", durabilidad: "Alta", escalabilidad: "Buena (gestionada por el proveedor)", coste: "Medio", desc: "Sistema de archivos gestionado y compartido por red para múltiples clientes." },
+      { nombre: "Objeto en nube frío", tipo: "objetos", uso: "archivado", ejemplos: ["Amazon S3 Glacier", "Azure Blob Archive", "GCS Archive"], latencia: "Minutos u horas para restaurar", rendimiento: "Bajo", durabilidad: "Muy alta (11 nueves)", escalabilidad: "Masiva", coste: "Muy bajo", desc: "Capas de almacenamiento de objetos orientadas a archivado con costes mínimos y tiempos de recuperación largos." }
     ];
 
     const glosario = [
@@ -134,21 +136,26 @@
       { termino: "IOPS", definicion: "Número de operaciones de entrada/salida por segundo." },
       { termino: "ACID", definicion: "Propiedades de atomicidad, consistencia, aislamiento y durabilidad en bases de datos." },
       { termino: "RAID", definicion: "Conjunto de técnicas de redundancia y distribución de discos para rendimiento y tolerancia a fallos." },
-      { termino: "CAP", definicion: "Teorema que establece el trade-off entre consistencia, disponibilidad y tolerancia a particiones." },
+      { termino: "CAP", definicion: "Teorema que establece el trade off entre consistencia, disponibilidad y tolerancia a particiones." },
       { termino: "Consistencia eventual", definicion: "Modelo donde las réplicas convergen con el tiempo, sin garantía inmediata." },
       { termino: "Durabilidad", definicion: "Capacidad de los datos de sobrevivir a fallos." },
-      { termino: "Escalabilidad horizontal", definicion: "Capacidad de crecer añadiendo más nodos en paralelo." }
+      { termino: "Escalabilidad horizontal", definicion: "Capacidad de crecer añadiendo más nodos en paralelo." },
+      { termino: "Throughput", definicion: "Ancho de banda efectivo medido en MB/s o GB/s, distinto de IOPS." },
+      { termino: "RPO", definicion: "Recovery Point Objective. Cantidad máxima de datos que se puede perder medida en tiempo." },
+      { termino: "RTO", definicion: "Recovery Time Objective. Tiempo objetivo para restaurar el servicio tras una caída." }
     ];
 
     const preguntas = [
       { enunciado: "¿Qué medio es más adecuado para archivado de muy bajo coste?", opciones: ["RAM", "SSD NVMe", "Cinta"], correcta: "Cinta" },
       { enunciado: "¿Cuál de estas tecnologías sigue el modelo ACID por defecto?", opciones: ["BD relacional", "NoSQL clave-valor", "Objeto en nube"], correcta: "BD relacional" },
-      { enunciado: "¿Qué sistema se usa típicamente para exponer almacenamiento por archivos en red?", opciones: ["NAS", "SAN", "Bloque en nube"], correcta: "NAS" }
+      { enunciado: "¿Qué sistema se usa típicamente para exponer almacenamiento por archivos en red?", opciones: ["NAS", "SAN", "Bloque en nube"], correcta: "NAS" },
+      { enunciado: "¿Qué opción es mejor para un caché distribuido de muy baja latencia?", opciones: ["NoSQL clave-valor", "Cinta", "Objeto en nube"], correcta: "NoSQL clave-valor" },
+      { enunciado: "Para compartir carpetas entre varias instancias sin gestionar servidores de archivos propios, ¿qué elegirías?", opciones: ["Archivo en nube", "Cinta", "RAM"], correcta: "Archivo en nube" },
+      { enunciado: "Necesitas el coste más bajo posible para archivado con tiempos de recuperación largos. ¿Qué capa usas?", opciones: ["Objeto en nube frío", "SSD NVMe", "RAM"], correcta: "Objeto en nube frío" }
     ];
 
     // ---------- Helpers ----------
     const $ = s => document.querySelector(s);
-    const $$ = s => Array.from(document.querySelectorAll(s));
     const humanize = s => String(s).replace(/-/g, " ").replace(/\b\w/g, m => m.toUpperCase());
 
     // ---------- Render tarjetas ----------
